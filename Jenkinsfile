@@ -4,12 +4,12 @@ pipeline {
     agent any
     environment {
         ENV_TYPE = "production"
-        PORT = 3524
+        PORT = ""
         NAMESPACE = "inctbc-ru"
         REGISTRY_HOSTNAME = "bitecreator"
         REGISTRY = "registry.hub.docker.com"
-        PROJECT = "inct-bc"
-        DEPLOYMENT_NAME = "inct-bc-deployment"
+        PROJECT = "inct-bc-messenger"
+        DEPLOYMENT_NAME = "inct-bc-messenger-deployment"
         IMAGE_NAME = "${env.BUILD_ID}_${env.ENV_TYPE}_${env.GIT_COMMIT}"
         DOCKER_BUILD_NAME = "${env.REGISTRY_HOSTNAME}/${env.PROJECT}:${env.IMAGE_NAME}"
     }

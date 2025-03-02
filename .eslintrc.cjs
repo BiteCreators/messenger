@@ -1,9 +1,5 @@
 module.exports = {
-    env: {
-        jest: true
-    },
     extends: [
-        // '@it-incubator/eslint-config',
         require('@byte-creators/config').eslint,
         'plugin:storybook/recommended',
         'plugin:testing-library/react',

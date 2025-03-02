@@ -1,1 +1,3 @@
-export { Messenger } from '@/features/messanger/ui/Messenger'
+import Messenger from './ui/Messenger'
+
+export default Messenger

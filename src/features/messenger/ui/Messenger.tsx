@@ -1,5 +1,5 @@
-import React from 'react'
-
-export const Messenger = () => {
-  return <div>Hello I'm microfrontend Messenger!</div>
+const Messenger = () => {
+  return <div className={'text-emerald-600'}>Hello Im microfrontend Messenger!</div>
 }
+
+export default Messenger
