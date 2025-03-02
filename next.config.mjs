@@ -21,7 +21,7 @@ const nextConfig = {
             enableUrlLoaderFix: true,
             exposePages: true,
           },
-          filename: 'static/chunks/remoteEntry.js',
+          filename: '_next/static/chunks/remoteEntry.js',
           name: 'messenger',
           shared: {},
         })
