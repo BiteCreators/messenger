@@ -5,6 +5,9 @@ const nextConfig = {
     devIndicators: {
     buildActivity: false,
   },
+    experimental: {
+      esmExternals: "loose"
+    },
   i18n: {
     defaultLocale: "ru",
     locales: ["en", "ru"],
@@ -21,7 +24,7 @@ const nextConfig = {
             enableUrlLoaderFix: true,
             exposePages: true,
           },
-          filename: '_next/static/chunks/remoteEntry.js',
+          filename: 'static/chunks/remoteEntry.js',
           name: 'messenger',
           shared: {},
         })
