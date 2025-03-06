@@ -12,9 +12,9 @@ import {
   type UpdateMessageRequest,
 } from '../types/messenger.type'
 import { getSocket } from './getSocket'
-import { instance } from './instance'
+import { messengerApi } from './instance'
 
-export const messagesApi = instance.injectEndpoints({
+export const messagesApi = messengerApi.injectEndpoints({
   endpoints: builder => ({
     deleteMessage: builder.mutation<void, { id: number }>({
       query: ({ id }) => ({
@@ -22,7 +22,7 @@ export const messagesApi = instance.injectEndpoints({
         url: `/v1/messanger/${id}`,
       }),
     }),
-    getDialogs: builder.query<DialogsResponse, DialogsRequest>({
+    getDialogs: builder.query<DialogsResponse, DialogsRequest | void>({
       async onCacheEntryAdded(
         _,
         { cacheDataLoaded, cacheEntryRemoved, dispatch, updateCachedData }
@@ -90,7 +90,8 @@ export const messagesApi = instance.injectEndpoints({
         socket.off(WS_EVENT_PATH.ERROR)
       },
       providesTags: ['Messages'],
-      query: () => ({
+      query: params => ({
+        params: { ...params },
         url: `v1/messanger`,
       }),
     }),

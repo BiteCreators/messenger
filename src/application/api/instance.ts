@@ -10,7 +10,7 @@ const isAppExtra = (extra: unknown): extra is AppExtra => {
   return typeof extra === 'object' && extra !== null
 }
 
-export const instance = createApi({
+export const messengerApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://inctagram.work/api/',
     credentials: 'include',
@@ -31,6 +31,6 @@ export const instance = createApi({
     },
   }),
   endpoints: () => ({}),
-  reducerPath: 'inctagramApi',
+  reducerPath: 'messengerApi',
   tagTypes: ['Messages', 'Me'],
 })
