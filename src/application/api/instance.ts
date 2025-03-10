@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseQueryWithReauth } from '@byte-creators/utils'
+import { createApi } from '@reduxjs/toolkit/query/react'
 
 type AppExtra = {
   req?: {
@@ -11,25 +12,7 @@ const isAppExtra = (extra: unknown): extra is AppExtra => {
 }
 
 export const messengerApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://inctagram.work/api/',
-    credentials: 'include',
-    prepareHeaders: (headers, { extra }) => {
-      let accessToken: string | undefined
-
-      if (typeof window === 'undefined' && isAppExtra(extra) && extra?.req) {
-        accessToken = extra.req.cookies?.accessToken
-      } else if (typeof document !== 'undefined') {
-        accessToken = document.cookie.split('accessToken=')[1]
-      }
-
-      if (accessToken) {
-        headers.set('Authorization', `Bearer ${accessToken}`)
-      }
-
-      return headers
-    },
-  }),
+  baseQuery: baseQueryWithReauth(),
   endpoints: () => ({}),
   reducerPath: 'messengerApi',
   tagTypes: ['Messages', 'Me'],
