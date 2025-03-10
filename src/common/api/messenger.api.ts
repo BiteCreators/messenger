@@ -1,4 +1,4 @@
-import { WS_EVENT_PATH } from '../lib/consts'
+import { WS_EVENT_PATH } from '../../application/lib/consts'
 import {
   type DialogsRequest,
   type DialogsResponse,

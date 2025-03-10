@@ -1,4 +1,4 @@
-import { messengerApi } from '@/application/api/instance'
+import { messengerApi } from '@/common/api/instance'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const store = configureStore({
