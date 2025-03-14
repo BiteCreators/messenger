@@ -1,4 +1,4 @@
-import { messagesApi } from '@/application/api/messenger.api'
+import { messagesApi } from '@/common/api/messenger.api'
 import { useRouter } from 'next/router'
 
 export const useDialogsList = () => {

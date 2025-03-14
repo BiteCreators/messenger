@@ -1,7 +1,6 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef } from 'react'
 
-import { messagesApi } from '@/application'
-import { Message } from '@/application/types/messenger.type'
+import { useSendMessageTextArea } from '@/features/messenger/model/useSendMessageTextArea'
 import { Alert, Button, DragAndDropInput, TextArea, Typography } from '@byte-creators/ui-kit'
 import {
   CloseOutlineSmall,
@@ -9,8 +8,7 @@ import {
   MicOutline,
   PlusCircleOutlineBig,
 } from '@byte-creators/ui-kit/icons'
-import { cn, mergeRefs, useTextArea } from '@byte-creators/utils'
-import { useRouter } from 'next/router'
+import { cn, mergeRefs } from '@byte-creators/utils'
 
 type Props = {
   disabled?: boolean
@@ -24,30 +22,8 @@ type Props = {
 
 export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
   ({ disabled, error, id, isCorrect, limitCount, onChange, required }, ref) => {
-    const { handleChange, textAreaId, textAreaRef } = useTextArea({
-      onChange,
-    })
-    const step = 0 as 0 | 1 | 2
-    const { query } = useRouter()
-    const [textAriaValue, setTextAriaValue] = useState('')
-    const [sendMessage] = messagesApi.useSendMessageMutation()
-    const { data } = messagesApi.useGetMessagesQuery({
-      dialoguePartnerId: Number(query.id) || 0,
-    })
-
-    const handleSendMessage = () => {
-      sendMessage({ message: textAriaValue, receiverId: Number(query.id) })
-    }
-
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setTextAriaValue(e.currentTarget.value)
-      handleChange(e)
-      setTimeout(() => {
-        if (textAreaRef.current) {
-          textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight
-        }
-      }, 50)
-    }
+    const { data, handleSendMessage, handleTextAreaChange, step, textAreaRef, textAriaValue } =
+      useSendMessageTextArea(onChange)
 
     return (
       <div className={'w-full flex flex-col bg-dark-700 border-t border-dark-300'}>
@@ -55,7 +31,7 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
           <div className={'flex mt-3 mb-1 mx-3'}>
             {/*<ScrollArea className={'max-w-[300px] w-auto'} orientation={'horizontal'}>*/}
             <ul className={'flex gap-3'}>
-              {data?.items.map((el, i) => (
+              {data?.items.map(el => (
                 <li className={'relative'} key={el.id}>
                   <img alt={'Image'} className={'rounded-[2px] max-h-9 overflow-hidden'} src={''} />
                   <button
@@ -97,9 +73,15 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
               onChange={handleTextAreaChange}
               placeholder={'Type message'}
               ref={mergeRefs([ref, textAreaRef])}
+              value={textAriaValue}
             />
           </div>
-          <div className={'mx-2 flex items-end py-2 h-full relative whitespace-nowrap'}>
+          <div
+            className={cn(
+              'mx-2 flex py-2 h-full relative whitespace-nowrap',
+              step === 1 && 'items-baseline'
+            )}
+          >
             {step === 0 && (
               <div className={'pb-2 pr-5 flex flex-row-reverse gap-4 w-full'}>
                 <button>
@@ -116,7 +98,7 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
                 onClick={handleSendMessage}
                 variant={'text'}
               >
-                <Typography variant={'h3'}>{step === 1 ? 'Send message' : 'Send voice'}</Typography>
+                <span>{step === 1 ? 'Send message' : 'Send voice'}</span>
               </Button>
             )}
             {error && <Alert canClose={false} message={error} purpose={'toast'} type={'error'} />}

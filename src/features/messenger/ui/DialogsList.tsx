@@ -19,13 +19,13 @@ export const DialogsList = () => {
         {data ? (
           // <ScrollArea className={'h-[600px]'}>
           <ul>
-            {data.items.map((dialog: Dialog, i) => (
+            {data.items.map((dialog: Dialog) => (
               <li
                 className={
                   'flex p-3 gap-3 hover:bg-dark-100 border-t border-dark-300 cursor-pointer'
                 }
-                key={i}
-                onClick={() => handleUserClick(dialog.ownerId)}
+                key={dialog.id}
+                onClick={() => handleUserClick(dialog.receiverId)}
               >
                 <Avatar
                   avatarURL={dialog.avatars?.[1]?.url || ''}
