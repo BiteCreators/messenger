@@ -8,7 +8,7 @@ const Messenger = () => {
       <Typography className={'mb-3 text-2xl'} variant={'h1'}>
         Messenger
       </Typography>
-      <div className={'flex'}>
+      <div className={'flex min-h-[650px] max-w-[970px]'}>
         <DialogsList />
         <MessengerWindow />
       </div>

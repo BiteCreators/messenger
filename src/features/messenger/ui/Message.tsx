@@ -1,6 +1,8 @@
-import { Typography } from '@byte-creators/ui-kit'
+import { messagesApi } from '@/common/api/messenger.api'
+import { Avatar, Typography } from '@byte-creators/ui-kit'
 import { CheckmarkOutline, DoneAllOutline } from '@byte-creators/ui-kit/icons'
 import { cn } from '@byte-creators/utils'
+import { useRouter } from 'next/router'
 
 type Props = {
   imgMessage: boolean
@@ -21,16 +23,19 @@ export const Message = ({
   item,
   voiceMessage,
 }: Props) => {
+  const { query } = useRouter()
+  const { data } = messagesApi.useGetDialogsQuery()
+  const currentDialog = data?.items.filter(item => item.ownerId === Number(query.id))[0]
+
   return (
     <div className={cn(['flex my-6 relative'], isOwner && 'justify-end')}>
-      {/*<UserAvatar*/}
-      {/*  className={cn([*/}
-      {/*    'w-9 absolute bottom-[18px] transform translate-y-1/2',*/}
-      {/*    isOwner ? '-right-12' : '-left-12',*/}
-      {/*  ])}*/}
-      {/*  isLoading={false}*/}
-      {/*  src={''}*/}
-      {/*/>*/}
+      {!isOwner && (
+        <Avatar
+          avatarURL={currentDialog?.avatars?.[0]?.url || ''}
+          isNextLink={false}
+          linkContainerClassname={'w-[35px] mr-4'}
+        />
+      )}
       <div
         className={cn(
           ['max-w-80 h-fit rounded-lg  flex flex-col'],
