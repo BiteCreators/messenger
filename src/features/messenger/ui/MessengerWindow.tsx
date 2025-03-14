@@ -6,8 +6,18 @@ import { useRouter } from 'next/router'
 
 export const MessengerWindow = () => {
   const { query } = useRouter()
-  const { data } = messagesApi.useGetDialogsQuery()
-  const currentDialog = data?.items.filter(item => item.receiverId === Number(query.id))[0]
+  const { data: dialogsData } = messagesApi.useGetDialogsQuery()
+  const { data: meData } = messagesApi.useMeQuery()
+  const userId = meData?.userId
+
+  const currentDialog = dialogsData?.items.find(
+    item => item.receiverId === Number(query.id) || item.ownerId === Number(query.id)
+  )
+
+  const partnerId =
+    currentDialog?.receiverId === userId ? currentDialog?.ownerId : currentDialog?.receiverId
+
+  const avatarUrl = currentDialog?.avatars?.[0]?.url || ''
 
   return (
     <div
@@ -18,8 +28,8 @@ export const MessengerWindow = () => {
       <div className={'w-full bg-dark-500 border-b border-dark-300 h-[72px] p-3 pt-4'}>
         {currentDialog ? (
           <UserProfile
-            avatarUrl={currentDialog.avatars?.[0]?.url}
-            profileId={currentDialog.ownerId}
+            avatarUrl={avatarUrl}
+            profileId={partnerId || 0}
             userName={currentDialog.userName}
           />
         ) : null}

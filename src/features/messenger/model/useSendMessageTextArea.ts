@@ -15,12 +15,19 @@ export const useSendMessageTextArea = (
   const [textAriaValue, setTextAriaValue] = useState('')
   const { query } = useRouter()
   const [sendMessage] = messagesApi.useSendMessageMutation()
-  const { data } = messagesApi.useGetMessagesQuery({
-    dialoguePartnerId: Number(query.id) || 0,
-  })
+  const { data: meData } = messagesApi.useMeQuery() // Получаем ваш ID
+  const userId = meData?.userId
 
   const handleSendMessage = () => {
-    sendMessage({ message: textAriaValue, receiverId: Number(query.id) })
+    const receiverId = Number(query.id)
+
+    if (receiverId === userId) {
+      console.error('You cannot send a message to yourself')
+
+      return
+    }
+
+    sendMessage({ message: textAriaValue, receiverId })
     setTextAriaValue('')
     setStep(0)
   }
@@ -43,7 +50,6 @@ export const useSendMessageTextArea = (
   }
 
   return {
-    data,
     handleSendMessage,
     handleTextAreaChange,
     step,

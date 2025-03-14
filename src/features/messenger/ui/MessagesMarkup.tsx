@@ -1,6 +1,5 @@
 import { messagesApi } from '@/common/api/messenger.api'
 import { Message } from '@/features/messenger/ui/Message'
-import { ScrollArea } from '@byte-creators/ui-kit'
 import { useRouter } from 'next/router'
 
 export const MessagesMarkup = () => {
@@ -9,10 +8,13 @@ export const MessagesMarkup = () => {
     dialoguePartnerId: Number(query.id) || 0,
   })
 
+  const sortedMessages = data?.items
+    .slice()
+    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+
   return (
-    // <ScrollArea className={mockImages.length && step === 1 ? 'h-[55vh]' : 'h-[60vh]'}>
     <div className={'px-6 h-full content-end'}>
-      {data?.items.map(item => {
+      {sortedMessages?.map(item => {
         const isOwner = item.ownerId !== Number(query.id)
         const voiceMessage = item.messageType === 'VOICE'
         const imgMessage = item.messageType === 'IMAGE'
@@ -34,6 +36,5 @@ export const MessagesMarkup = () => {
         )
       })}
     </div>
-    // </ScrollArea>
   )
 }

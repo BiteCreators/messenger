@@ -3,16 +3,22 @@ import { useRouter } from 'next/router'
 
 export const useDialogsList = () => {
   const router = useRouter()
-
-  console.log('useDialogsList', router.query.search)
+  const { data: meData } = messagesApi.useMeQuery()
+  const userId = meData?.userId
 
   const { data, isLoading } = messagesApi.useGetDialogsQuery({
     searchName: router.query.search as string,
   })
 
-  const handleUserClick = (userId: number) => {
+  const handleUserClick = (receiverId: number) => {
+    if (receiverId === userId) {
+      console.error('You cannot open a dialog with yourself')
+
+      return
+    }
+
     router.push({
-      query: `id=${userId}`,
+      query: `id=${receiverId}`,
     })
   }
 
@@ -20,5 +26,6 @@ export const useDialogsList = () => {
     data,
     handleUserClick,
     isLoading,
+    userId,
   }
 }
