@@ -17,9 +17,11 @@ type ParamsRequest = {
 export type DialogsRequest = ParamsRequest
 export type MessagesRequest = { dialoguePartnerId: number } & ParamsRequest
 export type SendMessageRequest = {
-  message: string
+  message: File | string // сюда можно добавить поддержку аудиофайла
+  messageType: MessageType // добавим тип сообщения (TEXT, VOICE)
   receiverId: number
 }
+
 export type UpdateMessageRequest = {
   id: number
   message: string

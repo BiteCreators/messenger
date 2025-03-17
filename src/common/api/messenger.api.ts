@@ -7,6 +7,7 @@ import {
   MeResponse,
   type Message,
   MessageStatus,
+  MessageType,
   type MessagesRequest,
   type MessagesResponse,
   type SendMessageRequest,
@@ -104,9 +105,33 @@ export const messagesApi = messengerApi.injectEndpoints({
           const socket = getSocket()
 
           socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: Message) => {
-            updateCachedData(draft => {
-              draft.items.push(message)
-            })
+            if (message.messageType === MessageType.VOICE) {
+              // Обработка голосового сообщения
+              const base64Data = message.messageText.split(',')[1] // Убираем префикс "data:audio/webm;base64,"
+              const byteCharacters = atob(base64Data) // Декодируем base64
+              const byteNumbers = new Array(byteCharacters.length)
+
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i)
+              }
+
+              const byteArray = new Uint8Array(byteNumbers)
+              const audioBlob = new Blob([byteArray], { type: 'audio/webm' }) // Создаем Blob
+              const audioUrl = URL.createObjectURL(audioBlob) // Создаем URL для воспроизведения
+
+              // Сохраняем URL в состоянии
+              updateCachedData(draft => {
+                draft.items.push({
+                  ...message,
+                  messageText: audioUrl, // Сохраняем URL вместо base64
+                })
+              })
+            } else {
+              // Обычное текстовое сообщение
+              updateCachedData(draft => {
+                draft.items.push(message)
+              })
+            }
           })
           socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
             updateCachedData(draft => {
@@ -151,12 +176,50 @@ export const messagesApi = messengerApi.injectEndpoints({
         url: '/v1/auth/me',
       }),
     }),
+    // sendMessage: builder.mutation<unknown, SendMessageRequest>({
+    //   queryFn: ({ message, receiverId }) => {
+    //     const socket = getSocket()
+    //
+    //     try {
+    //       socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, { message, receiverId })
+    //
+    //       return { data: null }
+    //     } catch (error) {
+    //       return { error: { error: 'Failed to send message', status: 'CUSTOM_ERROR' } }
+    //     }
+    //   },
+    // }),
     sendMessage: builder.mutation<unknown, SendMessageRequest>({
-      queryFn: ({ message, receiverId }) => {
+      queryFn: ({ message, messageType, receiverId }) => {
         const socket = getSocket()
 
+        // Проверяем, если это аудио
+        if (messageType === MessageType.VOICE) {
+          const formData = new FormData()
+
+          formData.append('audio', message) // добавляем аудиофайл
+
+          // Здесь ты отправляешь форму с файлом
+          try {
+            socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
+              message: formData,
+              messageType: MessageType.VOICE,
+              receiverId,
+            })
+
+            return { data: null }
+          } catch (error) {
+            return { error: { error: 'Failed to send audio message', status: 'CUSTOM_ERROR' } }
+          }
+        }
+
+        // Для текстового сообщения
         try {
-          socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, { message, receiverId })
+          socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
+            message,
+            messageType,
+            receiverId,
+          })
 
           return { data: null }
         } catch (error) {

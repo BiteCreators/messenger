@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import { messagesApi } from '@/common/api/messenger.api'
+import { MessageType } from '@/common/types/messenger.type'
 import { useTextArea } from '@byte-creators/utils'
 import { useRouter } from 'next/router'
 
@@ -27,7 +28,7 @@ export const useSendMessageTextArea = (
       return
     }
 
-    sendMessage({ message: textAriaValue, receiverId })
+    sendMessage({ message: textAriaValue, messageType: MessageType.TEXT, receiverId })
     setTextAriaValue('')
     setStep(0)
   }

@@ -1,4 +1,5 @@
 import { messagesApi } from '@/common/api/messenger.api'
+import { AudioRecorder } from '@/features/messenger/ui/AudioRecorder'
 import { MessagesMarkup } from '@/features/messenger/ui/MessagesMarkup'
 import { SendMessageTextArea } from '@/features/messenger/ui/SendMessageTextArea'
 import { Typography, UserProfile } from '@byte-creators/ui-kit'
@@ -36,6 +37,7 @@ export const MessengerWindow = () => {
       </div>
       {currentDialog ? (
         <>
+          <AudioRecorder />
           <MessagesMarkup />
           <SendMessageTextArea onChange={() => {}} />
         </>
