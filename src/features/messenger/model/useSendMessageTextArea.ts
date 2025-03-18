@@ -28,7 +28,7 @@ export const useSendMessageTextArea = (
       return
     }
 
-    sendMessage({ message: textAriaValue, messageType: MessageType.TEXT, receiverId })
+    sendMessage({ message: textAriaValue, receiverId })
     setTextAriaValue('')
     setStep(0)
   }

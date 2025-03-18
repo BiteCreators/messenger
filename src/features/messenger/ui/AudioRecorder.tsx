@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 
 import { messagesApi } from '@/common/api/messenger.api'
 import { MessageType } from '@/common/types/messenger.type'
+import { Button } from '@byte-creators/ui-kit'
 import { useRouter } from 'next/router'
 
 const mimeType = 'audio/webm'
@@ -87,36 +88,38 @@ export const AudioRecorder = () => {
 
       return
     }
+    //audio === blob:http://localhost:3001/b1c23f1f-5df9-4424-af86-91c7d21abd66
+    //преобразовать в base64
 
-    const response = await fetch(audio)
-    const audioBlob = await response.blob()
+    sendMessage({
+      message: audio,
+      receiverId,
+    })
 
-    sendMessage({ message: audioBlob, messageType: MessageType.VOICE, receiverId })
     setAudio(null)
   }
 
   return (
-    <div className={'z-50 h-20 px-3'}>
-      <h2>Audio Recorder</h2>
-      <main>
+    <div className={'z-50 h-20 px-3 pb-5'}>
+      <div className={'flex'}>
+        {recordingStatus === 'inactive' ? (
+          <button onClick={startRecording}>Start Recording</button>
+        ) : null}
+        {recordingStatus === 'recording' ? (
+          <button onClick={stopRecording}>Stop Recording</button>
+        ) : null}
+      </div>
+      {audio ? (
         <div>
-          {recordingStatus === 'inactive' ? (
-            <button onClick={startRecording}>Start Recording</button>
-          ) : null}
-          {recordingStatus === 'recording' ? (
-            <button onClick={stopRecording}>Stop Recording</button>
-          ) : null}
-        </div>
-        {audio ? (
-          <div>
-            <audio controls src={audio}></audio>
-            <button onClick={handleSendVoiceMessage}>Send Voice Message</button>
+          <audio controls src={audio}></audio>
+          <div className={'gap-3'}>
+            <Button onClick={handleSendVoiceMessage}>Send</Button>
             <a download href={audio}>
               Download Recording
             </a>
           </div>
-        ) : null}
-      </main>
+        </div>
+      ) : null}
     </div>
   )
 }

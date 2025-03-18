@@ -10,10 +10,10 @@ type Props = {
   isOwner: boolean
   isReadMessage: boolean
   isReceivedMessage: boolean
-  //todo: remove any
   item: any
   voiceMessage: boolean
 }
+
 export const Message = ({
   imgMessage,
   imgMessageWithoutText,
@@ -26,6 +26,9 @@ export const Message = ({
   const { query } = useRouter()
   const { data } = messagesApi.useGetDialogsQuery()
   const currentDialog = data?.items.filter(item => item.ownerId === Number(query.id))[0]
+
+  // Проверка на наличие blob в messageText (если это голосовое сообщение)
+  const isVoiceMessage = item.messageText.startsWith('blob:')
 
   return (
     <div className={cn(['flex my-6 relative'], isOwner && 'justify-end')}>
@@ -48,7 +51,15 @@ export const Message = ({
         )}
         {!imgMessageWithoutText ? (
           <Typography className={'px-3 mt-2'} variant={'regular-text'}>
-            {voiceMessage ? 'Voice message' : item.messageText}
+            {isVoiceMessage ? (
+              // Отображаем элемент audio для голосового сообщения
+              <audio controls>
+                <source src={item.messageText} type={'audio/webm'} />
+                Your browser does not support the audio element.
+              </audio>
+            ) : (
+              item.messageText
+            )}
           </Typography>
         ) : null}
 

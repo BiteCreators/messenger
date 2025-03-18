@@ -33,6 +33,41 @@ export const messagesApi = messengerApi.injectEndpoints({
 
         const socket = getSocket()
 
+        // socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: Message) => {
+        //   if (message.messageType === MessageType.VOICE) {
+        //     const base64Data = message.messageText.split(',')[1] // Убираем префикс "data:audio/webm;base64,"
+        //     const byteCharacters = atob(base64Data) // Декодируем base64
+        //     const byteNumbers = new Array(byteCharacters.length)
+        //
+        //     for (let i = 0; i < byteCharacters.length; i++) {
+        //       byteNumbers[i] = byteCharacters.charCodeAt(i)
+        //     }
+        //
+        //     const byteArray = new Uint8Array(byteNumbers)
+        //     const audioBlob = new Blob([byteArray], { type: 'audio/webm' }) // Создаем Blob
+        //     const audioUrl = URL.createObjectURL(audioBlob) // Создаем URL для воспроизведения
+        //
+        //     // Сохраняем URL в состоянии
+        //     updateCachedData(draft => {
+        //       draft.items.push({
+        //         ...message,
+        //         avatars: [], // Добавляем пустой массив avatars
+        //         messageText: audioUrl, // Сохраняем URL вместо base64
+        //         userName: 'Unknown', // Добавляем имя пользователя
+        //       })
+        //     })
+        //   } else {
+        //     // Обычное текстовое сообщение
+        //     updateCachedData(draft => {
+        //       draft.items.push({
+        //         ...message,
+        //         avatars: [], // Добавляем пустой массив avatars
+        //         userName: 'Unknown', // Добавляем имя пользователя
+        //       })
+        //     })
+        //   }
+        // })
+
         socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: Message) => {
           updateCachedData(draft => {
             const index = draft.items.findIndex(
@@ -48,20 +83,9 @@ export const messagesApi = messengerApi.injectEndpoints({
             }
           })
         })
-
         socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
           updateCachedData(draft => {
-            const index = draft.items.findIndex(
-              dialog =>
-                (message.ownerId === dialog.receiverId && message.receiverId === dialog.ownerId) ||
-                (message.receiverId === dialog.receiverId && message.ownerId === dialog.ownerId)
-            )
-
-            if (index !== -1) {
-              draft.items[index] = { ...draft.items[index], ...message }
-            } else {
-              dispatch(messagesApi.endpoints.getDialogs.initiate({}, { forceRefetch: true }))
-            }
+            draft.items.push(message)
           })
           //????
           socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
@@ -69,7 +93,26 @@ export const messagesApi = messengerApi.injectEndpoints({
             receiverId: message.receiverId,
           })
         })
-
+        // socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
+        //   updateCachedData(draft => {
+        //     const index = draft.items.findIndex(
+        //       dialog =>
+        //         (message.ownerId === dialog.receiverId && message.receiverId === dialog.ownerId) ||
+        //         (message.receiverId === dialog.receiverId && message.ownerId === dialog.ownerId)
+        //     )
+        //
+        //     if (index !== -1) {
+        //       draft.items[index] = { ...draft.items[index], ...message }
+        //     } else {
+        //       dispatch(messagesApi.endpoints.getDialogs.initiate({}, { forceRefetch: true }))
+        //     }
+        //   })
+        //   //????
+        //   socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
+        //     message: { ...message, status: MessageStatus.RECEIVED },
+        //     receiverId: message.receiverId,
+        //   })
+        // })
         socket.on(WS_EVENT_PATH.MESSAGE_DELETED, (id: number) => {
           updateCachedData(draft => {
             const index = draft.items.findIndex(dialog => dialog.id === id)
@@ -105,10 +148,10 @@ export const messagesApi = messengerApi.injectEndpoints({
           const socket = getSocket()
 
           socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: Message) => {
-            if (message.messageType === MessageType.VOICE) {
+            if (message.messageText.startsWith('data:audio/webm;base64,')) {
               // Обработка голосового сообщения
-              const base64Data = message.messageText.split(',')[1] // Убираем префикс "data:audio/webm;base64,"
-              const byteCharacters = atob(base64Data) // Декодируем base64
+              const base64Data = message.messageText.split(',')[1]
+              const byteCharacters = atob(base64Data)
               const byteNumbers = new Array(byteCharacters.length)
 
               for (let i = 0; i < byteCharacters.length; i++) {
@@ -116,10 +159,9 @@ export const messagesApi = messengerApi.injectEndpoints({
               }
 
               const byteArray = new Uint8Array(byteNumbers)
-              const audioBlob = new Blob([byteArray], { type: 'audio/webm' }) // Создаем Blob
-              const audioUrl = URL.createObjectURL(audioBlob) // Создаем URL для воспроизведения
+              const audioBlob = new Blob([byteArray], { type: 'audio/webm' })
+              const audioUrl = URL.createObjectURL(audioBlob)
 
-              // Сохраняем URL в состоянии
               updateCachedData(draft => {
                 draft.items.push({
                   ...message,
@@ -190,34 +232,12 @@ export const messagesApi = messengerApi.injectEndpoints({
     //   },
     // }),
     sendMessage: builder.mutation<unknown, SendMessageRequest>({
-      queryFn: ({ message, messageType, receiverId }) => {
+      queryFn: ({ message, receiverId }) => {
         const socket = getSocket()
 
-        // Проверяем, если это аудио
-        if (messageType === MessageType.VOICE) {
-          const formData = new FormData()
-
-          formData.append('audio', message) // добавляем аудиофайл
-
-          // Здесь ты отправляешь форму с файлом
-          try {
-            socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
-              message: formData,
-              messageType: MessageType.VOICE,
-              receiverId,
-            })
-
-            return { data: null }
-          } catch (error) {
-            return { error: { error: 'Failed to send audio message', status: 'CUSTOM_ERROR' } }
-          }
-        }
-
-        // Для текстового сообщения
         try {
           socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
-            message,
-            messageType,
+            message, // Отправляем base64 как строку
             receiverId,
           })
 
