@@ -25,7 +25,7 @@ export const Message = ({
 }: Props) => {
   const { query } = useRouter()
   const { data } = messagesApi.useGetDialogsQuery()
-  const currentDialog = data?.items.filter(item => item.ownerId === Number(query.id))[0]
+  const currentDialog = data?.items.filter(item => item.receiverId === Number(query.id))[0]
 
   return (
     <div className={cn(['flex my-6 relative'], isOwner && 'justify-end')}>
