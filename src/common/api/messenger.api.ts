@@ -85,6 +85,7 @@ export const messagesApi = messengerApi.injectEndpoints({
         })
         socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
           updateCachedData(draft => {
+            // @ts-ignore
             draft.items.push(message)
           })
           //????
