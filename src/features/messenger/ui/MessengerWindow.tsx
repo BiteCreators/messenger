@@ -1,34 +1,29 @@
-import { messagesApi } from '@/common/api/messenger.api'
 import { MessagesMarkup } from '@/features/messenger/ui/MessagesMarkup'
 import { SendMessageTextArea } from '@/features/messenger/ui/SendMessageTextArea'
-import { Typography, UserProfile } from '@byte-creators/ui-kit'
-import { useRouter } from 'next/router'
+import { useMessengerWindow } from '@/features/messenger/ui/useMessengerWindow'
+import { Avatar, Typography } from '@byte-creators/ui-kit'
 
 export const MessengerWindow = () => {
-  const { query } = useRouter()
-  const { data } = messagesApi.useGetDialogsQuery()
-  const currentDialog = data?.items.filter(item => item.receiverId === Number(query.id))[0]
+  const { profileData, query } = useMessengerWindow()
 
   return (
-    <div
-      className={
-        'flex flex-col justify-between h-full w-[75%] border-[2px] border-dark-300 overflow-y-hidden'
-      }
-    >
-      <div className={'w-full bg-dark-500 border-b border-dark-300 h-[72px] p-3 pt-4'}>
-        {currentDialog ? (
-          <UserProfile
-            avatarUrl={currentDialog.avatars?.[0]?.url}
-            profileId={currentDialog.ownerId}
-            userName={currentDialog.userName}
-          />
-        ) : null}
-      </div>
-      {currentDialog ? (
-        <>
+    <div className={'flex flex-col w-[75%] h-[650px] border-t border-r border-b border-dark-300'}>
+      {query.id || query.name ? (
+        <div className={'w-full flex flex-col justify-between h-full border-dark-300'}>
+          {profileData && (
+            <ul className={'flex items-center gap-3 p-3 border-b border-dark-300 bg-dark-500'}>
+              <li>
+                <Avatar
+                  avatarURL={profileData.avatars?.[0]?.url || ''}
+                  linkContainerClassname={'w-[45px]'}
+                />
+              </li>
+              <li>{profileData.userName}</li>
+            </ul>
+          )}
           <MessagesMarkup />
           <SendMessageTextArea onChange={() => {}} />
-        </>
+        </div>
       ) : (
         <div className={'h-full flex justify-center items-center'}>
           <div className={'py-3 px-6 rounded-lg bg-dark-300'}>
