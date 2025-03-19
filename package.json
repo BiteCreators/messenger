@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@byte-creators/config": "^1.0.5",
-    "@byte-creators/ui-kit": "^1.9.8",
+    "@byte-creators/ui-kit": "^1.9.10",
     "@byte-creators/utils": "^1.10.10",
     "@reduxjs/toolkit": "^2.6.0",
     "date-fns": "^4.1.0",
