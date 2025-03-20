@@ -9,6 +9,7 @@ import {
   MessageStatus,
   type MessagesRequest,
   type MessagesResponse,
+  SearchUsersResponse,
   type SendMessageRequest,
   type UpdateMessageRequest,
 } from '../types/messenger.type'
@@ -142,6 +143,27 @@ export const messagesApi = messengerApi.injectEndpoints({
         params,
         url: `v1/messanger/${dialoguePartnerId}`,
       }),
+    }),
+    getUsers: builder.query<
+      SearchUsersResponse,
+      { cursor?: number; pageNumber?: number; pageSize?: number; search?: string }
+    >({
+      merge: (currentData, newData) => {
+        if (currentData.nextCursor === newData.nextCursor) {
+          return newData
+        }
+
+        return {
+          ...currentData,
+          items: [...currentData.items, ...newData.items],
+          nextCursor: newData.nextCursor,
+        }
+      },
+      query: params => ({
+        params,
+        url: `v1/users`,
+      }),
+      serializeQueryArgs: ({ endpointName }) => endpointName,
     }),
     me: builder.query<MeResponse, void>({
       providesTags: ['Me'],

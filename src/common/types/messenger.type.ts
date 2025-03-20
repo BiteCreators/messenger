@@ -67,3 +67,30 @@ export type MeResponse = {
   userId: number
   userName: string
 }
+
+export type SearchUsersResponse = {
+  items: SearchUser[]
+  nextCursor: number
+  page: number
+  pageSize: number
+  pagesCount: number
+  prevCursor: number
+  totalCount: number
+}
+
+export type SearchUser = {
+  avatars: [
+    {
+      createdAt: string
+      fileSize: number
+      height: null
+      url: string
+      width: number
+    },
+  ]
+  createdAt: string
+  firstName: string
+  id: number
+  lastName: string
+  userName: string
+}

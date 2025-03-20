@@ -22,16 +22,16 @@ type Props = {
 
 export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
   ({ disabled, error, id, isCorrect, limitCount, onChange, required }, ref) => {
-    const { data, handleSendMessage, handleTextAreaChange, step, textAreaRef, textAriaValue } =
+    const { handleSendMessage, handleTextAreaChange, messages, step, textAreaRef, textAriaValue } =
       useSendMessageTextArea(onChange)
 
     return (
       <div className={'w-full flex flex-col bg-dark-700 border-t border-dark-300'}>
-        {data?.items.length && step === 1 ? (
+        {messages?.items.length && step === 1 ? (
           <div className={'flex mt-3 mb-1 mx-3'}>
             {/*<ScrollArea className={'max-w-[300px] w-auto'} orientation={'horizontal'}>*/}
             <ul className={'flex gap-3'}>
-              {data?.items.map(el => (
+              {messages?.items.map(el => (
                 <li className={'relative'} key={el.id}>
                   <img alt={'Image'} className={'rounded-[2px] max-h-9 overflow-hidden'} src={''} />
                   <button
