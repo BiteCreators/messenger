@@ -3,25 +3,154 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.docs-story {
+  background-color: #000;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+body {
+  font-family: Inter, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
+  rgb(var(--background-start-rgb));
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+/* @layer utilities { */
+
+/*  .text-balance { */
+
+/*    text-wrap: none; */
+
+/*  } */
+
+/* } */
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.truncate-multiline {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.linear-loader {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+
+  overflow: hidden;
+
+  width: 100%;
+  height: 4px;
+
+  background-color: transparent;
+}
+
+.linear-loader-bar {
+  --c: linear-gradient(90deg, #397df6 0%, #234e99 100%);
+
+  width: 100%;
+  height: 100%;
+
+  background: var(--c), var(--c), #171717;
+  background-repeat: no-repeat;
+  background-size: 60% 100%;
+
+  animation: loadBar 3s infinite;
+}
+
+@keyframes loadBar {
+  0% {
+    background-position:
+            -150% 0,
+            -150% 0;
+  }
+
+  66% {
+    background-position:
+            250% 0,
+            -150% 0;
+  }
+
+  100% {
+    background-position:
+            250% 0,
+            250% 0;
+  }
+}
+
+/* loader */
+
+.wrapperLoader {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-color: #0d0d0d;
+}
+
+.loader {
+  display: inline-block;
+
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+
+  border-top: 4px solid #fff;
+  border-right: 4px solid transparent;
+  border-radius: 50%;
+
+  animation: rotation 1s linear infinite;
+}
+
+.loader::after {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+
+  border-bottom: 4px solid #397cf4;
+  border-left: 4px solid transparent;
+  border-radius: 50%;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

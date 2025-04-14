@@ -28,17 +28,23 @@ export const Message = ({
   const currentDialog = data?.items.filter(item => item.receiverId === Number(query.id))[0]
 
   return (
-    <div className={cn(['flex my-6 relative'], isOwner && 'justify-end')}>
+    <div
+      className={cn(['flex relative'], isOwner && 'justify-end')}
+      style={{ margin: '24px 0 24px 0' }}
+    >
       {!isOwner && (
-        <Avatar
-          avatarURL={currentDialog?.avatars?.[0]?.url || ''}
-          isNextLink={false}
-          linkContainerClassname={'w-[35px] mr-4'}
-        />
+        <div style={{ width: '35px', marginRight: '16px' }}>
+          <Avatar
+            avatarURL={currentDialog?.avatars?.[0]?.url || ''}
+            isNextLink={false}
+            // linkContainerClassname={'w-[35px] mr-4'}
+          />
+        </div>
       )}
       <div
+        style={{ maxWidth: '320px', minWidth: '90px' }}
         className={cn(
-          ['max-w-80 h-fit rounded-lg  flex flex-col'],
+          ['h-fit rounded-lg  flex flex-col'],
           isOwner ? 'bg-primary-900' : 'bg-dark-300',
           imgMessageWithoutText && 'bg-transparent'
         )}
@@ -51,19 +57,18 @@ export const Message = ({
             {voiceMessage ? 'Voice message' : item.messageText}
           </Typography>
         ) : null}
-
         <Typography
-          className={cn([
-            'flex pb-2 text-light-900 self-end mt-1',
-            !imgMessageWithoutText && 'pr-3',
-          ])}
+          className={cn(['flex pb-2 text-light-900 self-end mt-1'])}
           variant={'small-text'}
         >
-          {new Date(item.createdAt).toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            hour12: false,
-            minute: '2-digit',
-          })}
+          <span style={{ paddingRight: '10px' }}>
+            {new Date(item.createdAt).toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              hour12: false,
+              minute: '2-digit',
+            })}
+          </span>
+
           {isReceivedMessage && <CheckmarkOutline height={16} viewBox={'0 0 20 25'} width={16} />}
           {isReadMessage && <DoneAllOutline height={16} viewBox={'0 0 20 25'} width={16} />}
         </Typography>

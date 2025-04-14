@@ -26,13 +26,17 @@ export const DialogsRender = ({ dialog, handleUserClick, isLoading }: Props) => 
         })
       }
     >
-      <Avatar avatarURL={dialog.avatars?.[0]?.url || ''} linkContainerClassname={'w-[45px]'} />
+      <div style={{ width: '45px' }}>
+        <Avatar avatarURL={dialog.avatars?.[0]?.url || ''} />
+      </div>
+
       <div className={cn('flex flex-col grow', [!isLoading && 'gap-2'])}>
         {isLoading ? (
           <Skeleton height={10} width={120} />
         ) : (
           <span
-            className={'text-light-100 text-[14px] w-[145px] whitespace-nowrap overflow-hidden'}
+            style={{ width: '145px', fontSize: '14px' }}
+            className={'text-light-100 whitespace-nowrap overflow-hidden'}
           >
             {dialog.userName}
           </span>
@@ -40,7 +44,10 @@ export const DialogsRender = ({ dialog, handleUserClick, isLoading }: Props) => 
         {isLoading ? (
           <Skeleton height={8} width={80} />
         ) : (
-          <span className={'text-light-900 text-xs w-[145px] whitespace-nowrap overflow-hidden'}>
+          <span
+            className={'text-light-900 text-xs whitespace-nowrap overflow-hidden'}
+            style={{ width: '145px' }}
+          >
             {dialog.messageText}
           </span>
         )}

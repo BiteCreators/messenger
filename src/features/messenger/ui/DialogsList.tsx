@@ -17,12 +17,12 @@ export const DialogsList = () => {
 
   return (
     <div className={'flex'}>
-      <div className={'border-dark-300 border max-w-[270px] bg-dark-500'}>
+      <div className={'border-dark-300 border bg-dark-500'} style={{ maxWidth: '270px' }}>
         <div className={'px-3 py-5'}>
           <SearchComponent fullWidth setValue={handleSetSearchValue} />
         </div>
         {data ? (
-          <ScrollArea className={'h-[570px]'}>
+          <ScrollArea style={{ height: '570px' }}>
             <ul>
               {data.items.map(dialog => (
                 <DialogsRender

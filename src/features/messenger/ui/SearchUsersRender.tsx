@@ -20,13 +20,16 @@ export const SearchUsersRender = forwardRef(
         onClick={() => handleUserClick({ name: user.userName })}
         ref={ref}
       >
-        <Avatar avatarURL={user.avatars[0]?.url || ''} linkContainerClassname={'w-[45px]'} />
+        <div style={{ width: '45px' }}>
+          <Avatar avatarURL={user.avatars[0]?.url || ''} />
+        </div>
         <div className={cn('flex flex-col grow', [!isLoading && 'gap-2'])}>
           {isLoading ? (
             <Skeleton height={10} width={120} />
           ) : (
             <span
-              className={'text-light-100 text-[14px] w-[145px] whitespace-nowrap overflow-hidden'}
+              className={'text-light-100 whitespace-nowrap overflow-hidden'}
+              style={{ fontSize: '14px', width: '145px' }}
             >
               {user.userName}
             </span>

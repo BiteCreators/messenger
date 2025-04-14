@@ -7,16 +7,21 @@ export const MessengerWindow = () => {
   const { profileData, query } = useMessengerWindow()
 
   return (
-    <div className={'flex flex-col w-[75%] h-[650px] border-t border-r border-b border-dark-300'}>
+    <div
+      className={'flex flex-col border-t border-r border-b border-dark-300'}
+      style={{ width: '75%', height: '650px' }}
+    >
       {query.id || query.name ? (
         <div className={'w-full flex flex-col justify-between h-full border-dark-300'}>
           {profileData && (
             <ul className={'flex items-center gap-3 p-3 border-b border-dark-300 bg-dark-500'}>
               <li>
-                <Avatar
-                  avatarURL={profileData.avatars?.[0]?.url || ''}
-                  linkContainerClassname={'w-[45px]'}
-                />
+                <div style={{ width: '45px' }}>
+                  <Avatar
+                    avatarURL={profileData.avatars?.[0]?.url || ''}
+                    // linkContainerClassname={'w-[45px]'}
+                  />
+                </div>
               </li>
               <li>{profileData.userName}</li>
             </ul>
