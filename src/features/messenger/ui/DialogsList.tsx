@@ -3,6 +3,8 @@ import { DialogsRender } from '@/features/messenger/ui/DialogsRender'
 import { SearchUsersRender } from '@/features/messenger/ui/SearchUsersRender'
 import { ScrollArea } from '@byte-creators/ui-kit'
 import { SearchComponent } from '@byte-creators/ui-kit/components'
+import styles from './styles/dialogsList.module.css'
+import { cn } from '@byte-creators/utils'
 
 export const DialogsList = () => {
   const {
@@ -16,13 +18,13 @@ export const DialogsList = () => {
   } = useDialogsList()
 
   return (
-    <div className={'flex'}>
-      <div className={'border-dark-300 border bg-dark-500'} style={{ maxWidth: '270px' }}>
-        <div className={'px-3 py-5'}>
+    <div className={styles.dialogsListContainer}>
+      <div className={cn([styles.sidebar, 'border-dark-300 bg-dark-500'])}>
+        <div className={styles.searchWrapper}>
           <SearchComponent fullWidth setValue={handleSetSearchValue} />
         </div>
         {data ? (
-          <ScrollArea style={{ height: '570px' }}>
+          <ScrollArea className={styles.scrollArea}>
             <ul>
               {data.items.map(dialog => (
                 <DialogsRender
@@ -34,7 +36,7 @@ export const DialogsList = () => {
               ))}
               {filterSearchUsers && filterSearchUsers.length !== 0 && (
                 <>
-                  <li className={'text-center py-2'}>Global users</li>
+                  <li className="text-center py-2">Global users</li>
                   {filterSearchUsers.map((user, i) => (
                     <SearchUsersRender
                       handleUserClick={handleUserClick}
@@ -53,7 +55,9 @@ export const DialogsList = () => {
             </ul>
           </ScrollArea>
         ) : (
-          <p className={'text-center'}>No dialogs</p>
+          <div className={styles.noDialogsWrapper}>
+            <p className={styles.noDialogsMessage}>No dialogs</p>
+          </div>
         )}
       </div>
     </div>

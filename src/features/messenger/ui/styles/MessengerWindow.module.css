@@ -1,0 +1,39 @@
+.windowWrapper {
+    display: flex;
+    flex-direction: column;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    width: 100%;
+}
+
+.dialogWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-bottom-width: 1px;
+}
+
+.avatarWrapper {
+    width: 45px;
+}
+
+.emptyStateWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyStateBox {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+}

@@ -1,9 +1,9 @@
 import Skeleton from 'react-loading-skeleton'
-
 import { dateFormat } from '@/application/utils/dataFormat'
 import { Dialog } from '@/common/types/messenger.type'
 import { Avatar } from '@byte-creators/ui-kit'
 import { cn } from '@byte-creators/utils'
+import styles from './styles/DialogsRender.module.css'
 
 type Props = {
   dialog: Dialog
@@ -16,9 +16,7 @@ export const DialogsRender = ({ dialog, handleUserClick, isLoading }: Props) => 
 
   return (
     <li
-      className={
-        'flex p-3 gap-3 hover:bg-dark-100 border-t border-b border-dark-300 cursor-pointer'
-      }
+      className={cn(styles.dialogItem, 'hover:bg-dark-100 border-dark-300')}
       key={dialog.id}
       onClick={() =>
         handleUserClick({
@@ -26,33 +24,24 @@ export const DialogsRender = ({ dialog, handleUserClick, isLoading }: Props) => 
         })
       }
     >
-      <div style={{ width: '45px' }}>
+      <div className={styles.avatarWrapper}>
         <Avatar avatarURL={dialog.avatars?.[0]?.url || ''} />
       </div>
 
-      <div className={cn('flex flex-col grow', [!isLoading && 'gap-2'])}>
+      <div className={cn(styles.contentWrapper, !isLoading && 'gap-2')}>
         {isLoading ? (
           <Skeleton height={10} width={120} />
         ) : (
-          <span
-            style={{ width: '145px', fontSize: '14px' }}
-            className={'text-light-100 whitespace-nowrap overflow-hidden'}
-          >
-            {dialog.userName}
-          </span>
+          <span className={cn(styles.userName, 'text-light-100')}>{dialog.userName}</span>
         )}
         {isLoading ? (
           <Skeleton height={8} width={80} />
         ) : (
-          <span
-            className={'text-light-900 text-xs whitespace-nowrap overflow-hidden'}
-            style={{ width: '145px' }}
-          >
-            {dialog.messageText}
-          </span>
+          <span className={cn(styles.messageText, 'text-light-900')}>{dialog.messageText}</span>
         )}
       </div>
-      <span className={'text-light-900 text-xs mt-0.5'}>
+
+      <span className={cn(styles.dateText, 'text-light-900')}>
         {isLoading ? <Skeleton height={10} width={15} /> : dateFormat(dialog.updatedAt, 'en')}
       </span>
     </li>

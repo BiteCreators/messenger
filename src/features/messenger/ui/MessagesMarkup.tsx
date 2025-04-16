@@ -2,6 +2,7 @@ import { messagesApi } from '@/common/api/messenger.api'
 import { Message } from '@/features/messenger/ui/Message'
 import { ScrollArea } from '@byte-creators/ui-kit'
 import { useRouter } from 'next/router'
+import styles from './styles/Message.module.css'
 
 export const MessagesMarkup = () => {
   const { query } = useRouter()
@@ -10,8 +11,8 @@ export const MessagesMarkup = () => {
   })
 
   return (
-    <ScrollArea style={{ height: '60vh' }}>
-      <div className={'px-6 h-full content-end'}>
+    <ScrollArea className={styles.messagesScrollArea}>
+      <div className={styles.messagesContainer}>
         {data?.items
           .slice()
           .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())

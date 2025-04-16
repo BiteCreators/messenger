@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react'
 import { useSendMessageTextArea } from '@/features/messenger/model/useSendMessageTextArea'
 import { Alert, Button, TextArea } from '@byte-creators/ui-kit'
 import { cn, mergeRefs } from '@byte-creators/utils'
-
+import styles from './styles/SendMessageTextArea.module.css'
 type Props = {
   disabled?: boolean
   error?: string
@@ -88,7 +88,7 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
             {/*)}*/}
             {(step === 1 || step === 2) && (
               <Button
-                className={'w-full text-center px-6'}
+                className={'w-full align-middle text-center px-6'}
                 onClick={handleSendMessage}
                 variant={'text'}
               >

@@ -1,0 +1,24 @@
+.dialogsListContainer {
+    display: flex;
+}
+
+.sidebar {
+    border-width: 1px;
+    max-width: 270px;
+}
+
+.searchWrapper {
+    padding: 20px 12px;
+}
+
+.scrollArea {
+    height: 620px;
+}
+
+.noDialogsWrapper {
+    height: 640px;
+}
+
+.noDialogsMessage {
+    text-align: center;
+}
