@@ -20,7 +20,7 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
       useSendMessageTextArea(onChange)
 
     return (
-      <div className={'w-full flex flex-col bg-dark-700 border-t border-dark-300'}>
+      <div className={cn([styles.componentWrapper, 'border-dark-300'])}>
         {/*{messages?.items.length && step === 1 ? (*/}
         {/*  <div className={'flex mt-3 mb-1 mx-3'}>*/}
         {/*    /!*<ScrollArea className={'max-w-[300px] w-auto'} orientation={'horizontal'}>*!/*/}
@@ -50,32 +50,20 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
         {/*  </div>*/}
         {/*) : null}*/}
         <div className={'flex'}>
-          <div className={'h-auto w-full'}>
+          <div className={styles.textareaWrapper}>
             <TextArea
-              className={cn([
-                'text-light-100 text-md bg-dark-100 leading-tight',
-                'border-none h-9 py-3 pl-5',
-                'focus:!outline-none',
-                // mockImages.length ? 'max-h-[120px]' : 'max-h-32',
-                'active:focus:outline-none active:outline-none',
-                'bg-transparent',
-              ])}
+              className={styles.textarea}
               disabled={disabled}
               isCorrect={isCorrect}
               limitCount={limitCount}
-              maxLength={limitCount}
+              maxLength={999}
               onChange={handleTextAreaChange}
               placeholder={'Type message'}
               ref={mergeRefs([ref, textAreaRef])}
               value={textAriaValue}
             />
           </div>
-          <div
-            className={cn(
-              'mx-2 flex py-2 h-full relative whitespace-nowrap',
-              step === 1 && 'items-baseline'
-            )}
-          >
+          <div className={cn(styles.buttonWrapper, step === 1 && 'items-baseline')}>
             {/*{step === 0 && (*/}
             {/*  <div className={'pb-2 pr-5 flex flex-row-reverse gap-4 w-full'}>*/}
             {/*    <button>*/}
@@ -87,11 +75,7 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
             {/*  </div>*/}
             {/*)}*/}
             {(step === 1 || step === 2) && (
-              <Button
-                className={'w-full align-middle text-center px-6'}
-                onClick={handleSendMessage}
-                variant={'text'}
-              >
+              <Button className={styles.button} onClick={handleSendMessage} variant={'text'}>
                 <span>{step === 1 ? 'Send message' : 'Send voice'}</span>
               </Button>
             )}
