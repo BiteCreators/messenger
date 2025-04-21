@@ -2,8 +2,9 @@ import React, { forwardRef } from 'react'
 
 import { useSendMessageTextArea } from '@/features/messenger/model/useSendMessageTextArea'
 import { Alert, Button, TextArea } from '@byte-creators/ui-kit'
-import { cn, mergeRefs } from '@byte-creators/utils'
+import { mergeRefs } from '@byte-creators/utils'
 import styles from './styles/SendMessageTextArea.module.css'
+
 type Props = {
   disabled?: boolean
   error?: string
@@ -20,7 +21,7 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
       useSendMessageTextArea(onChange)
 
     return (
-      <div className={cn([styles.componentWrapper, 'border-dark-300'])}>
+      <div className={styles.componentWrapper}>
         {/*{messages?.items.length && step === 1 ? (*/}
         {/*  <div className={'flex mt-3 mb-1 mx-3'}>*/}
         {/*    /!*<ScrollArea className={'max-w-[300px] w-auto'} orientation={'horizontal'}>*!/*/}
@@ -49,7 +50,7 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
         {/*    </div>*/}
         {/*  </div>*/}
         {/*) : null}*/}
-        <div className={'flex'}>
+        <div className={styles.flexWrapper}>
           <div className={styles.textareaWrapper}>
             <TextArea
               className={styles.textarea}
@@ -63,7 +64,10 @@ export const SendMessageTextArea = forwardRef<HTMLTextAreaElement, Props>(
               value={textAriaValue}
             />
           </div>
-          <div className={cn(styles.buttonWrapper, step === 1 && 'items-baseline')}>
+          <div
+            className={styles.buttonWrapper}
+            style={step === 1 ? { alignItems: 'baseline' } : {}}
+          >
             {/*{step === 0 && (*/}
             {/*  <div className={'pb-2 pr-5 flex flex-row-reverse gap-4 w-full'}>*/}
             {/*    <button>*/}

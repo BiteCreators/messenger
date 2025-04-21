@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import '../styles/vars.css'
 
 import { Provider } from 'react-redux'
 

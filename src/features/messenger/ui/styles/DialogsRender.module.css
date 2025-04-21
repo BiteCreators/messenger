@@ -5,6 +5,11 @@
     border-top-width: 1px;
     border-bottom-width: 1px;
     cursor: pointer;
+    border-color: var(--color-dark-300);
+}
+
+.dialogItem:hover {
+    background-color: var(--color-dark-100);
 }
 
 .avatarWrapper {
@@ -22,6 +27,7 @@
     font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
+    color: var(--color-light-100);
 }
 
 .messageText {
@@ -29,9 +35,11 @@
     font-size: 0.75rem;
     white-space: nowrap;
     overflow: hidden;
+    color: var(--color-light-900);
 }
 
 .dateText {
     font-size: 0.75rem;
     margin-top: 0.125rem;
+    color: var(--color-light-900);
 }

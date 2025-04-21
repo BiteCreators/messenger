@@ -36,11 +36,10 @@ export const Message = ({
         </div>
       )}
       <div
-        className={cn(
-          styles.messageContent,
-          isOwner ? 'bg-primary-900' : 'bg-dark-300',
-          imgMessageWithoutText && 'bg-transparent'
-        )}
+        className={styles.messageContent}
+        style={{
+          backgroundColor: `var(${isOwner ? '--color-primary-900' : '--color-dark-300'})`,
+        }}
       >
         {imgMessage && <img alt="Image message" className={styles.image} src={item.url} />}
         {!imgMessageWithoutText ? (

@@ -3,17 +3,16 @@ import { SendMessageTextArea } from '@/features/messenger/ui/SendMessageTextArea
 import { useMessengerWindow } from '@/features/messenger/ui/useMessengerWindow'
 import { Avatar, Typography } from '@byte-creators/ui-kit'
 import styles from './styles/MessengerWindow.module.css'
-import { cn } from '@byte-creators/utils'
 
 export const MessengerWindow = () => {
   const { profileData, query } = useMessengerWindow()
 
   return (
-    <div className={cn(styles.windowWrapper, 'border-dark-300')}>
+    <div className={styles.windowWrapper}>
       {query.id || query.name ? (
-        <div className={cn(styles.dialogWrapper, 'border-dark-300')}>
+        <div className={styles.dialogWrapper}>
           {profileData && (
-            <ul className={cn(styles.header, 'border-dark-300', 'bg-dark-500')}>
+            <ul className={styles.header}>
               <li>
                 <div className={styles.avatarWrapper}>
                   <Avatar avatarURL={profileData.avatars?.[0]?.url || ''} />
@@ -27,7 +26,7 @@ export const MessengerWindow = () => {
         </div>
       ) : (
         <div className={styles.emptyStateWrapper}>
-          <div className={cn(styles.emptyStateBox, 'bg-dark-300')}>
+          <div className={styles.emptyStateBox}>
             <Typography variant="medium-text">Choose who you would like to talk to</Typography>
           </div>
         </div>

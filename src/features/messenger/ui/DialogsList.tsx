@@ -4,7 +4,6 @@ import { SearchUsersRender } from '@/features/messenger/ui/SearchUsersRender'
 import { ScrollArea } from '@byte-creators/ui-kit'
 import { SearchComponent } from '@byte-creators/ui-kit/components'
 import styles from './styles/dialogsList.module.css'
-import { cn } from '@byte-creators/utils'
 
 export const DialogsList = () => {
   const {
@@ -19,7 +18,7 @@ export const DialogsList = () => {
 
   return (
     <div className={styles.dialogsListContainer}>
-      <div className={cn([styles.sidebar, 'border-dark-300 bg-dark-500'])}>
+      <div className={styles.sidebar}>
         <div className={styles.searchWrapper}>
           <SearchComponent fullWidth setValue={handleSetSearchValue} />
         </div>
@@ -36,7 +35,7 @@ export const DialogsList = () => {
               ))}
               {filterSearchUsers && filterSearchUsers.length !== 0 && (
                 <>
-                  <li className="text-center py-2">Global users</li>
+                  <li className={styles.usersList}>Global users</li>
                   {filterSearchUsers.map((user, i) => (
                     <SearchUsersRender
                       handleUserClick={handleUserClick}
