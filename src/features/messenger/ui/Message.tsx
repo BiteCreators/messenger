@@ -3,7 +3,7 @@ import { Avatar, Typography } from '@byte-creators/ui-kit'
 import { CheckmarkOutline, DoneAllOutline } from '@byte-creators/ui-kit/icons'
 import { cn } from '@byte-creators/utils'
 import { useRouter } from 'next/router'
-import styles from './styles/message.module.css'
+import styles from './styles/Message.module.css'
 
 type Props = {
   imgMessage: boolean

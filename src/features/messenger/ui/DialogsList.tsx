@@ -3,7 +3,7 @@ import { DialogsRender } from '@/features/messenger/ui/DialogsRender'
 import { SearchUsersRender } from '@/features/messenger/ui/SearchUsersRender'
 import { ScrollArea } from '@byte-creators/ui-kit'
 import { SearchComponent } from '@byte-creators/ui-kit/components'
-import styles from './styles/dialogsList.module.css'
+import styles from './styles/DialogsList.module.css'
 
 export const DialogsList = () => {
   const {
