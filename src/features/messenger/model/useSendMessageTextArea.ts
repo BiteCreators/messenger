@@ -37,6 +37,10 @@ export const useSendMessageTextArea = (
 
     setTextAriaValue('')
     setStep(0)
+    if (textAreaRef.current) {
+      const el = textAreaRef.current
+      el.style.height = 'auto'
+    }
   }
 
   const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

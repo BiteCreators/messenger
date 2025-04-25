@@ -1,0 +1,31 @@
+.dialogsListContainer {
+    display: flex;
+}
+
+.sidebar {
+    border-width: 1px;
+    max-width: 270px;
+    background-color: var(--color-dark-500);
+    border-color: var(--color-dark-300);
+}
+
+.usersList {
+    text-align: center;
+    padding: 8px 0 8px 0;
+}
+
+.searchWrapper {
+    padding: 20px 12px;
+}
+
+.scrollArea {
+    height: 620px;
+}
+
+.noDialogsWrapper {
+    height: 640px;
+}
+
+.noDialogsMessage {
+    text-align: center;
+}

@@ -2,21 +2,21 @@ import { MessagesMarkup } from '@/features/messenger/ui/MessagesMarkup'
 import { SendMessageTextArea } from '@/features/messenger/ui/SendMessageTextArea'
 import { useMessengerWindow } from '@/features/messenger/ui/useMessengerWindow'
 import { Avatar, Typography } from '@byte-creators/ui-kit'
+import styles from './styles/MessengerWindow.module.css'
 
 export const MessengerWindow = () => {
   const { profileData, query } = useMessengerWindow()
 
   return (
-    <div className={'flex flex-col w-[75%] h-[650px] border-t border-r border-b border-dark-300'}>
+    <div className={styles.windowWrapper}>
       {query.id || query.name ? (
-        <div className={'w-full flex flex-col justify-between h-full border-dark-300'}>
+        <div className={styles.dialogWrapper}>
           {profileData && (
-            <ul className={'flex items-center gap-3 p-3 border-b border-dark-300 bg-dark-500'}>
+            <ul className={styles.header}>
               <li>
-                <Avatar
-                  avatarURL={profileData.avatars?.[0]?.url || ''}
-                  linkContainerClassname={'w-[45px]'}
-                />
+                <div className={styles.avatarWrapper}>
+                  <Avatar avatarURL={profileData.avatars?.[0]?.url || ''} />
+                </div>
               </li>
               <li>{profileData.userName}</li>
             </ul>
@@ -25,9 +25,9 @@ export const MessengerWindow = () => {
           <SendMessageTextArea onChange={() => {}} />
         </div>
       ) : (
-        <div className={'h-full flex justify-center items-center'}>
-          <div className={'py-3 px-6 rounded-lg bg-dark-300'}>
-            <Typography variant={'medium-text'}>Choose who you would like to talk to</Typography>
+        <div className={styles.emptyStateWrapper}>
+          <div className={styles.emptyStateBox}>
+            <Typography variant="medium-text">Choose who you would like to talk to</Typography>
           </div>
         </div>
       )}
