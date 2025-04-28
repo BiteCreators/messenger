@@ -1,6 +1,6 @@
 import {NextFederationPlugin} from '@module-federation/nextjs-mf';
 
-import packageJson from './package.json' assert { type: 'json' };
+// import packageJson from './package.json' assert { type: 'json' };
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

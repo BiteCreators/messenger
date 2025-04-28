@@ -49,26 +49,26 @@ export const messagesApi = messengerApi.injectEndpoints({
           })
         })
 
-        socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
-          updateCachedData(draft => {
-            const index = draft.items.findIndex(
-              dialog =>
-                (message.ownerId === dialog.receiverId && message.receiverId === dialog.ownerId) ||
-                (message.receiverId === dialog.receiverId && message.ownerId === dialog.ownerId)
-            )
-
-            if (index !== -1) {
-              draft.items[index] = { ...draft.items[index], ...message }
-            } else {
-              dispatch(messagesApi.endpoints.getDialogs.initiate({}, { forceRefetch: true }))
-            }
-          })
-          //????
-          socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
-            message: { ...message, status: MessageStatus.RECEIVED },
-            receiverId: message.receiverId,
-          })
-        })
+        // socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
+        //   updateCachedData(draft => {
+        //     const index = draft.items.findIndex(
+        //       dialog =>
+        //         (message.ownerId === dialog.receiverId && message.receiverId === dialog.ownerId) ||
+        //         (message.receiverId === dialog.receiverId && message.ownerId === dialog.ownerId)
+        //     )
+        //
+        //     if (index !== -1) {
+        //       draft.items[index] = { ...draft.items[index], ...message }
+        //     } else {
+        //       dispatch(messagesApi.endpoints.getDialogs.initiate({}, { forceRefetch: true }))
+        //     }
+        //   })
+        //   //????
+        //   socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
+        //     message: { ...message, status: MessageStatus.RECEIVED },
+        //     receiverId: message.receiverId,
+        //   })
+        // })
 
         socket.on(WS_EVENT_PATH.MESSAGE_DELETED, (id: number) => {
           updateCachedData(draft => {
@@ -98,7 +98,9 @@ export const messagesApi = messengerApi.injectEndpoints({
       }),
     }),
     getMessages: builder.query<MessagesResponse, MessagesRequest>({
-      async onCacheEntryAdded(_, { cacheDataLoaded, cacheEntryRemoved, updateCachedData }) {
+      async onCacheEntryAdded(arg, { cacheDataLoaded, cacheEntryRemoved, updateCachedData }) {
+        const { dialoguePartnerId } = arg
+
         try {
           await cacheDataLoaded
 
@@ -106,12 +108,22 @@ export const messagesApi = messengerApi.injectEndpoints({
 
           socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: Message) => {
             updateCachedData(draft => {
-              draft.items.push(message)
+              if (
+                dialoguePartnerId === message.ownerId ||
+                dialoguePartnerId === message.receiverId
+              ) {
+                draft.items.push(message)
+              }
             })
           })
           socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
             updateCachedData(draft => {
-              draft.items.push(message)
+              if (
+                dialoguePartnerId === message.ownerId ||
+                dialoguePartnerId === message.receiverId
+              ) {
+                draft.items.push(message)
+              }
             })
             //????
             socket.emit(WS_EVENT_PATH.RECEIVE_MESSAGE, {
