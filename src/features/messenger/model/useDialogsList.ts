@@ -13,7 +13,8 @@ export const useDialogsList = () => {
     searchName: router.query.search as string,
   })
   const [getUsers, { data: searchUsers, reset }] = messagesApi.useLazyGetUsersQuery()
-
+  const { data: me } = messagesApi.useMeQuery()
+  const currentUserId = me?.userId
   let setSearchValue: (value: string) => void
 
   const handleTrigger = async () => {
@@ -28,15 +29,16 @@ export const useDialogsList = () => {
     setSearchValue = setValue
   }
 
-  const handleUserClick = (userData: { id?: number | undefined; name?: string | undefined }) => {
+  const handleUserClick = (userData: { id?: number; name?: string }) => {
     if (userData.id) {
       router.push({
-        query: `id=${userData.id}`,
+        pathname: '/messenger',
+        query: { id: userData.id },
       })
-    }
-    if (userData.name) {
+    } else if (userData.name) {
       router.push({
-        query: `name=${userData.name}`,
+        pathname: '/messenger',
+        query: { name: userData.name },
       })
     }
     setSearchValue('')
@@ -62,5 +64,6 @@ export const useDialogsList = () => {
     handleUserClick,
     isLoading,
     triggerSearchUsersRef,
+    currentUserId,
   }
 }

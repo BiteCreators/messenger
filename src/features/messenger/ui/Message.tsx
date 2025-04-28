@@ -26,13 +26,17 @@ export const Message = ({
 }: Props) => {
   const { query } = useRouter()
   const { data } = messagesApi.useGetDialogsQuery()
-  const currentDialog = data?.items.filter(item => item.receiverId === Number(query.id))[0]
+  const currentDialog = data?.items.find(
+    dialog => dialog.receiverId === Number(query.id) || dialog.ownerId === Number(query.id)
+  )
+
+  const companionAvatarURL = currentDialog?.avatars?.[0]?.url || ''
 
   return (
     <div className={cn(styles.messageContainer, isOwner && styles.justifyEnd)}>
-      {!isOwner && (
+      {!isOwner && currentDialog && (
         <div className={styles.avatarWrapper}>
-          <Avatar avatarURL={currentDialog?.avatars?.[0]?.url || ''} isNextLink={false} />
+          <Avatar avatarURL={companionAvatarURL} isNextLink={false} />
         </div>
       )}
       <div

@@ -8,20 +8,20 @@ type Props = {
   dialog: Dialog
   handleUserClick: (userData: { id: number }) => void
   isLoading: boolean
+  currentUserId: number
 }
 
-export const DialogsRender = ({ dialog, handleUserClick, isLoading }: Props) => {
-  const currentUserId = 0
-
+export const DialogsRender = ({ dialog, handleUserClick, isLoading, currentUserId }: Props) => {
   return (
     <li
       className={styles.dialogItem}
       key={dialog.id}
-      onClick={() =>
+      onClick={() => {
+        let companionId = dialog.ownerId === currentUserId ? dialog.receiverId : dialog.ownerId
         handleUserClick({
-          id: dialog.receiverId === currentUserId ? dialog.ownerId : dialog.receiverId,
+          id: companionId,
         })
-      }
+      }}
     >
       <div className={styles.avatarWrapper}>
         <Avatar avatarURL={dialog.avatars?.[0]?.url || ''} />
