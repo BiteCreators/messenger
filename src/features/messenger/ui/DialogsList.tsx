@@ -13,6 +13,7 @@ export const DialogsList = () => {
     handleSetSearchValue,
     handleUserClick,
     isLoading,
+    currentUserId,
     triggerSearchUsersRef,
   } = useDialogsList()
 
@@ -22,12 +23,13 @@ export const DialogsList = () => {
         <div className={styles.searchWrapper}>
           <SearchComponent fullWidth setValue={handleSetSearchValue} />
         </div>
-        {data ? (
+        {currentUserId && data ? (
           <ScrollArea className={styles.scrollArea}>
             <ul>
               {data.items.map(dialog => (
                 <DialogsRender
                   dialog={dialog}
+                  currentUserId={currentUserId}
                   handleUserClick={handleUserClick}
                   isLoading={isLoading}
                   key={dialog.id}

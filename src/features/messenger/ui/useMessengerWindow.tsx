@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 
 export const useMessengerWindow = () => {
   const { query } = useRouter()
+  const { data: me } = messagesApi.useMeQuery()
+
   const [profileData, setProfileData] = useState({
     avatars: [{ url: '' }],
     userName: '',
@@ -24,12 +26,12 @@ export const useMessengerWindow = () => {
     }
   }
 
-  const currentUserId = 0
-
   const setCurrentDialog = (userId: number) => {
-    const currentDialog = data?.items.filter(item =>
-      item.receiverId === currentUserId ? item.ownerId === userId : item.receiverId === userId
-    )[0]
+    if (!data || !me) return
+
+    const currentDialog = data.items.find(item => {
+      return item.receiverId === me.userId ? item.ownerId === userId : item.receiverId === userId
+    })
 
     if (currentDialog) {
       setProfileData({
@@ -40,14 +42,12 @@ export const useMessengerWindow = () => {
   }
 
   useEffect(() => {
-    if (query.id) {
+    if (data && me && query.id) {
       setCurrentDialog(Number(query.id))
-    }
-
-    if (query.name) {
+    } else if (query.name) {
       setUserProfile(query.name as string)
     }
-  }, [query.id, query.name])
+  }, [data, me, query.id, query.name])
 
   return {
     profileData,
