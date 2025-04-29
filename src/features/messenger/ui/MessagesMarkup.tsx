@@ -3,12 +3,19 @@ import { Message } from '@/features/messenger/ui/Message'
 import { LoaderBlock, ScrollArea } from '@byte-creators/ui-kit'
 import { useRouter } from 'next/router'
 import styles from './styles/Message.module.css'
+import { useEffect, useRef } from 'react'
 
 export const MessagesMarkup = () => {
   const { query } = useRouter()
   const { data, isLoading } = messagesApi.useGetMessagesQuery({
     dialoguePartnerId: Number(query.id) || 0,
   })
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!isLoading && data) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })
+    }
+  }, [data, isLoading])
 
   if (isLoading) {
     return (
@@ -45,6 +52,7 @@ export const MessagesMarkup = () => {
               />
             )
           })}
+        <div ref={messagesEndRef} />
       </div>
     </ScrollArea>
   )
