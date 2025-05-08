@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "devMessage": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next dev -p 3001",
-    "buildMessage": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next build",
+    "dev": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next dev -p 3001",
+    "build": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next build",
     "build:production": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next build",
     "start": "next start",
     "lint": "next lint"
