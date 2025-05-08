@@ -60,8 +60,22 @@ export const Message = ({
               minute: '2-digit',
             })}
           </span>
-          {isReceivedMessage && <CheckmarkOutline height={16} viewBox={'0 0 20 25'} width={16} />}
-          {isReadMessage && <DoneAllOutline height={16} viewBox={'0 0 20 25'} width={16} />}
+          {isReceivedMessage && (
+            <CheckmarkOutline
+              className={styles.messageCheckmark}
+              height={16}
+              viewBox={'0 0 20 25'}
+              width={16}
+            />
+          )}
+          {isReadMessage && (
+            <DoneAllOutline
+              className={styles.messageCheckmarkDone}
+              height={16}
+              viewBox={'0 0 20 25'}
+              width={16}
+            />
+          )}
         </Typography>
       </div>
     </div>

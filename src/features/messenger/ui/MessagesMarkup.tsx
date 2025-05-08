@@ -13,13 +13,23 @@ export const MessagesMarkup = () => {
   const { data, isLoading, isFetching } = messagesApi.useGetMessagesQuery({
     dialoguePartnerId,
   })
+  const [updateMessageStatus] = messagesApi.useUpdateStatusMessageMutation()
+  const { data: me } = messagesApi.useMeQuery()
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!isLoading && data) {
+    if (!isLoading && data && me) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })
+
+      const unreadMessages = data.items.filter(
+        m => m.receiverId === me.userId && m.status !== 'READ'
+      )
+
+      if (unreadMessages.length > 0) {
+        updateMessageStatus({ ids: unreadMessages.map(m => m.id) })
+      }
     }
-  }, [data, isLoading])
+  }, [data, isLoading, updateMessageStatus, me])
 
   if (isLoading || isFetching) {
     return null
@@ -36,8 +46,8 @@ export const MessagesMarkup = () => {
             const voiceMessage = item.messageType === 'VOICE'
             const imgMessage = item.messageType === 'IMAGE'
             const imgMessageWithoutText = imgMessage && item.messageText === ''
-            const isReceivedMessage = item.status === 'RECEIVED' && !isOwner
-            const isReadMessage = item.status === 'READ' && !isOwner
+            const isReceivedMessage = item.status === 'SENT' && isOwner
+            const isReadMessage = item.status === 'READ' && isOwner
 
             return (
               <Message
