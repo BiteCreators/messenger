@@ -18,6 +18,13 @@
     margin: 14px 0;
 }
 
+.messageCheckmark {
+    margin-right: 5px;
+}
+.messageCheckmarkDone {
+    margin-right: 7px;
+}
+
 .justifyEnd {
     justify-content: flex-end;
 }
