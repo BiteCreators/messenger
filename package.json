@@ -5,6 +5,7 @@
   "scripts": {
     "devMessage": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next dev -p 3001",
     "buildMessage": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next build",
+    "build:production": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next build",
     "start": "next start",
     "lint": "next lint"
   },

@@ -3,6 +3,7 @@ import { Avatar, Typography } from '@byte-creators/ui-kit'
 import { CheckmarkOutline, DoneAllOutline } from '@byte-creators/ui-kit/icons'
 import { cn } from '@byte-creators/utils'
 import { useRouter } from 'next/router'
+
 import styles from './styles/Message.module.css'
 
 type Props = {
@@ -45,13 +46,13 @@ export const Message = ({
           backgroundColor: `var(${isOwner ? '--color-primary-900' : '--color-dark-300'})`,
         }}
       >
-        {imgMessage && <img alt="Image message" className={styles.image} src={item.url} />}
+        {imgMessage && <img alt={'Image message'} className={styles.image} src={item.url} />}
         {!imgMessageWithoutText ? (
-          <Typography className={styles.text} variant="regular-text">
+          <Typography className={styles.text} variant={'regular-text'}>
             {voiceMessage ? 'Voice message' : item.messageText}
           </Typography>
         ) : null}
-        <Typography className={styles.timestamp} variant="small-text">
+        <Typography className={styles.timestamp} variant={'small-text'}>
           <span className={styles.timestampTime}>
             {new Date(item.createdAt).toLocaleTimeString('en-US', {
               hour: '2-digit',
@@ -59,8 +60,8 @@ export const Message = ({
               minute: '2-digit',
             })}
           </span>
-          {isReceivedMessage && <CheckmarkOutline height={16} viewBox="0 0 20 25" width={16} />}
-          {isReadMessage && <DoneAllOutline height={16} viewBox="0 0 20 25" width={16} />}
+          {isReceivedMessage && <CheckmarkOutline height={16} viewBox={'0 0 20 25'} width={16} />}
+          {isReadMessage && <DoneAllOutline height={16} viewBox={'0 0 20 25'} width={16} />}
         </Typography>
       </div>
     </div>

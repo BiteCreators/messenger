@@ -4,7 +4,7 @@ pipeline {
     agent any
     environment {
         ENV_TYPE = "production"
-        PORT = ""
+        PORT = 3874
         NAMESPACE = "inctbc-ru"
         REGISTRY_HOSTNAME = "bitecreator"
         REGISTRY = "registry.hub.docker.com"
@@ -19,6 +19,20 @@ pipeline {
             steps {
                 checkout scm
             }
+        }
+        stage('Unit tests') {
+             steps {
+                echo "Preparing started..."
+                  script {
+                      sh '''
+                         export NVM_DIR="$HOME/.nvm"
+                         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                         nvm use --lts
+                         yarn install
+                         yarn test
+                      '''
+                  }
+             }
         }
         stage('Build docker image') {
             steps {

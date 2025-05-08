@@ -27,7 +27,9 @@ export const useMessengerWindow = () => {
   }
 
   const setCurrentDialog = (userId: number) => {
-    if (!data || !me) return
+    if (!data || !me) {
+      return
+    }
 
     const currentDialog = data.items.find(item => {
       return item.receiverId === me.userId ? item.ownerId === userId : item.receiverId === userId

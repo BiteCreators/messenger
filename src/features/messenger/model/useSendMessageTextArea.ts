@@ -39,6 +39,7 @@ export const useSendMessageTextArea = (
     setStep(0)
     if (textAreaRef.current) {
       const el = textAreaRef.current
+
       el.style.height = 'auto'
     }
   }

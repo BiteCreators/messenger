@@ -3,6 +3,7 @@ import React, { forwardRef } from 'react'
 import { useSendMessageTextArea } from '@/features/messenger/model/useSendMessageTextArea'
 import { Alert, Button, TextArea } from '@byte-creators/ui-kit'
 import { mergeRefs } from '@byte-creators/utils'
+
 import styles from './styles/SendMessageTextArea.module.css'
 
 type Props = {

@@ -2,9 +2,8 @@
 FROM node:20.11-alpine as dependencies
 WORKDIR /app
 COPY package*.json ./
-COPY pnpm-lock.yaml ./
 RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 #Билдим приложение
 #Кэширование зависимостей — если файлы в проекте изменились,
@@ -21,6 +20,6 @@ FROM node:20.11-alpine as runner
 WORKDIR /app
 ENV NODE_ENV production
 COPY --from=builder /app/ ./
-RUN npm install -g pnpm
 EXPOSE 3000
+RUN npm install -g pnpm
 CMD ["pnpm", "start"]

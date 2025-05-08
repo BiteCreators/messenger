@@ -2,6 +2,7 @@ import { MessagesMarkup } from '@/features/messenger/ui/MessagesMarkup'
 import { SendMessageTextArea } from '@/features/messenger/ui/SendMessageTextArea'
 import { useMessengerWindow } from '@/features/messenger/ui/useMessengerWindow'
 import { Avatar, Typography } from '@byte-creators/ui-kit'
+
 import styles from './styles/MessengerWindow.module.css'
 
 export const MessengerWindow = () => {
@@ -27,7 +28,7 @@ export const MessengerWindow = () => {
       ) : (
         <div className={styles.emptyStateWrapper}>
           <div className={styles.emptyStateBox}>
-            <Typography variant="medium-text">Choose who you would like to talk to</Typography>
+            <Typography variant={'medium-text'}>Choose who you would like to talk to</Typography>
           </div>
         </div>
       )}

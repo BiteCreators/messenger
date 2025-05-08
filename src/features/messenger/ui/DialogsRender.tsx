@@ -1,7 +1,9 @@
 import Skeleton from 'react-loading-skeleton'
+
 import { dateFormat } from '@/application/utils/dataFormat'
 import { Dialog } from '@/common/types/messenger.type'
 import { Avatar } from '@byte-creators/ui-kit'
+
 import styles from './styles/DialogsRender.module.css'
 
 type Props = {
@@ -17,7 +19,8 @@ export const DialogsRender = ({ dialog, handleUserClick, isLoading, currentUserI
       className={styles.dialogItem}
       key={dialog.id}
       onClick={() => {
-        let companionId = dialog.ownerId === currentUserId ? dialog.receiverId : dialog.ownerId
+        const companionId = dialog.ownerId === currentUserId ? dialog.receiverId : dialog.ownerId
+
         handleUserClick({
           id: companionId,
         })

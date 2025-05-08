@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton'
 import { SearchUser } from '@/common/types/messenger.type'
 import { Avatar } from '@byte-creators/ui-kit'
 import { cn } from '@byte-creators/utils'
+
 import styles from './styles/SearchUsersRender.module.css'
 
 type Props = {
