@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Message, messagesApi, MessageStatus } from '@/application'
+import { MessageData, messagesApi, MessageStatus } from '@/application'
 import { WS_EVENT_PATH } from '@/application/lib/consts'
 import { getSocket } from '@/common/api/getSocket'
 import { DialogsList } from '@/features/messenger/ui/DialogsList'
@@ -18,7 +18,7 @@ const Messenger = () => {
     }
     const socket = getSocket()
 
-    socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
+    socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: MessageData) => {
       let id: number
 
       if (message.receiverId === data?.userId) {
