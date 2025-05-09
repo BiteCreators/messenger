@@ -1,4 +1,4 @@
-import { useDialogsList } from '@/features/messenger/model/useDialogsList'
+import { useDialogsList } from '@/features/messenger/model'
 import { DialogsRender } from '@/features/messenger/ui/DialogsRender'
 import { SearchUsersRender } from '@/features/messenger/ui/SearchUsersRender'
 import { ScrollArea } from '@byte-creators/ui-kit'

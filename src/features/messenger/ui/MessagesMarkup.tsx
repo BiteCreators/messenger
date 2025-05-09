@@ -1,25 +1,11 @@
-import { useEffect, useRef } from 'react'
-
-import { messagesApi } from '@/common/api/messenger.api'
+import { useMessagesMarkup } from '@/features/messenger/model'
 import { Message } from '@/features/messenger/ui/Message'
 import { ScrollArea } from '@byte-creators/ui-kit'
-import { useRouter } from 'next/router'
 
 import styles from './styles/Message.module.css'
 
 export const MessagesMarkup = () => {
-  const { query } = useRouter()
-  const dialoguePartnerId = Number(query.id) || 0
-  const { data, isLoading, isFetching } = messagesApi.useGetMessagesQuery({
-    dialoguePartnerId,
-  })
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })
-    }
-  }, [data, isLoading])
+  const { isFetching, isLoading, data, query, messagesEndRef } = useMessagesMarkup()
 
   if (isLoading || isFetching) {
     return null
@@ -36,8 +22,8 @@ export const MessagesMarkup = () => {
             const voiceMessage = item.messageType === 'VOICE'
             const imgMessage = item.messageType === 'IMAGE'
             const imgMessageWithoutText = imgMessage && item.messageText === ''
-            const isReceivedMessage = item.status === 'RECEIVED' && !isOwner
-            const isReadMessage = item.status === 'READ' && !isOwner
+            const isReceivedMessage = item.status === 'SENT' && isOwner
+            const isReadMessage = item.status === 'READ' && isOwner
 
             return (
               <Message

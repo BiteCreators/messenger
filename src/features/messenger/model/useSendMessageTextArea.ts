@@ -21,26 +21,31 @@ export const useSendMessageTextArea = (
     dialoguePartnerId: Number(router.query.id) || 0,
   })
 
-  const handleSendMessage = () => {
-    sendMessage({
-      message: textAriaValue,
-      receiverId: Number(router.query.id || currentUser?.items[0].id),
-    })
-
-    if (router.query.name) {
-      router.push({
-        pathname: router.pathname,
-        query: { id: currentUser?.items[0].id },
+  const handleSendMessage = async () => {
+    try {
+      const receiverId = Number(router.query.id || currentUser?.items[0].id)
+      const response = await sendMessage({
+        message: textAriaValue,
+        receiverId: receiverId,
       })
-      reset()
-    }
 
-    setTextAriaValue('')
-    setStep(0)
-    if (textAreaRef.current) {
-      const el = textAreaRef.current
+      if (router.query.name) {
+        router.push({
+          pathname: router.pathname,
+          query: { id: currentUser?.items[0].id },
+        })
+        reset()
+      }
 
-      el.style.height = 'auto'
+      setTextAriaValue('')
+      setStep(0)
+      if (textAreaRef.current) {
+        const el = textAreaRef.current
+
+        el.style.height = 'auto'
+      }
+    } catch (e) {
+      console.log('error ' + e)
     }
   }
 
