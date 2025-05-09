@@ -53,6 +53,7 @@ export const Message = ({
           </Typography>
         ) : null}
         <Typography className={styles.timestamp} variant={'small-text'}>
+          <button className={styles.timestampTime}>delete</button>
           <span className={styles.timestampTime}>
             {new Date(item.createdAt).toLocaleTimeString('en-US', {
               hour: '2-digit',
