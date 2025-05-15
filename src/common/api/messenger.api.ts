@@ -5,7 +5,7 @@ import {
   type DialogsResponse,
   type Error,
   MeResponse,
-  type Message,
+  type MessageData,
   MessageStatus,
   type MessagesRequest,
   type MessagesResponse,
@@ -18,11 +18,24 @@ import { messengerApi } from './instance'
 
 export const messagesApi = messengerApi.injectEndpoints({
   endpoints: builder => ({
-    deleteMessage: builder.mutation<void, { id: number }>({
+    deleteMessage: builder.mutation<void, { id: number; dialoguePartnerId: number }>({
       query: ({ id }) => ({
         method: 'DELETE',
-        url: `/v1/messanger/${id}`,
+        url: `/v1/messenger/${id}`,
       }),
+      async onQueryStarted({ id, dialoguePartnerId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+
+          dispatch(
+            messagesApi.util.updateQueryData('getMessages', { dialoguePartnerId }, draft => {
+              draft.items = draft.items.filter(msg => msg.id !== id)
+            })
+          )
+        } catch (err) {
+          console.error(err)
+        }
+      },
     }),
     getDialogs: builder.query<DialogsResponse, DialogsRequest | void>({
       async onCacheEntryAdded(
@@ -33,7 +46,7 @@ export const messagesApi = messengerApi.injectEndpoints({
 
         const socket = getSocket()
 
-        socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: Message) => {
+        socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: MessageData) => {
           updateCachedData(draft => {
             const index = draft.items.findIndex(
               dialog =>
@@ -94,7 +107,7 @@ export const messagesApi = messengerApi.injectEndpoints({
       providesTags: ['Messages'],
       query: params => ({
         params: { ...params },
-        url: `v1/messanger`,
+        url: `v1/messenger`,
       }),
     }),
     getMessages: builder.query<MessagesResponse, MessagesRequest>({
@@ -106,7 +119,7 @@ export const messagesApi = messengerApi.injectEndpoints({
 
           const socket = getSocket()
 
-          socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: Message) => {
+          socket.on(WS_EVENT_PATH.RECEIVE_MESSAGE, (message: MessageData) => {
             updateCachedData(draft => {
               if (
                 dialoguePartnerId === message.ownerId ||
@@ -116,7 +129,7 @@ export const messagesApi = messengerApi.injectEndpoints({
               }
             })
           })
-          socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: Message) => {
+          socket.on(WS_EVENT_PATH.MESSAGE_SENT, (message: MessageData) => {
             updateCachedData(draft => {
               if (
                 dialoguePartnerId === message.ownerId ||
@@ -153,7 +166,7 @@ export const messagesApi = messengerApi.injectEndpoints({
       providesTags: ['Messages'],
       query: ({ dialoguePartnerId, ...params }) => ({
         params,
-        url: `v1/messanger/${dialoguePartnerId}`,
+        url: `v1/messenger/${dialoguePartnerId}`,
       }),
     }),
     getUsers: builder.query<
@@ -216,7 +229,7 @@ export const messagesApi = messengerApi.injectEndpoints({
       query: body => ({
         body,
         method: 'PUT',
-        url: `v1/messanger`,
+        url: `v1/messenger`,
       }),
     }),
   }),
