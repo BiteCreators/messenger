@@ -21,7 +21,7 @@ export const messagesApi = messengerApi.injectEndpoints({
     deleteMessage: builder.mutation<void, { id: number; dialoguePartnerId: number }>({
       query: ({ id }) => ({
         method: 'DELETE',
-        url: `/v1/messanger/${id}`,
+        url: `/v1/messenger/${id}`,
       }),
       async onQueryStarted({ id, dialoguePartnerId }, { dispatch, queryFulfilled }) {
         try {
@@ -107,7 +107,7 @@ export const messagesApi = messengerApi.injectEndpoints({
       providesTags: ['Messages'],
       query: params => ({
         params: { ...params },
-        url: `v1/messanger`,
+        url: `v1/messenger`,
       }),
     }),
     getMessages: builder.query<MessagesResponse, MessagesRequest>({
@@ -166,7 +166,7 @@ export const messagesApi = messengerApi.injectEndpoints({
       providesTags: ['Messages'],
       query: ({ dialoguePartnerId, ...params }) => ({
         params,
-        url: `v1/messanger/${dialoguePartnerId}`,
+        url: `v1/messenger/${dialoguePartnerId}`,
       }),
     }),
     getUsers: builder.query<
@@ -229,7 +229,7 @@ export const messagesApi = messengerApi.injectEndpoints({
       query: body => ({
         body,
         method: 'PUT',
-        url: `v1/messanger`,
+        url: `v1/messenger`,
       }),
     }),
   }),
