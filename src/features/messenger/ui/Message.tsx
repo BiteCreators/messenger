@@ -1,7 +1,7 @@
 import { MessageData } from '@/common/types/messenger.type'
 import { useMessage } from '@/features/messenger/model'
-import { Alert, Avatar, Typography } from '@byte-creators/ui-kit'
-import { CheckmarkOutline, DoneAllOutline } from '@byte-creators/ui-kit/icons'
+import { ActionConfirmation, Alert, Avatar, Button, Typography } from '@byte-creators/ui-kit'
+import { CheckmarkOutline, DoneAllOutline, TrashOutline } from '@byte-creators/ui-kit/icons'
 import { cn } from '@byte-creators/utils'
 
 import styles from './styles/Message.module.css'
@@ -16,19 +16,17 @@ type Props = {
   voiceMessage: boolean
 }
 
-export const Message = ({
-  imgMessage,
-  imgMessageWithoutText,
-  isOwner,
-  isReadMessage,
-  isReceivedMessage,
-  item,
-  voiceMessage,
-}: Props) => {
-  const { alertMessage, handleDeleteMessage, companionAvatarURL, currentDialog } = useMessage(
-    isOwner,
-    item
-  )
+export const Message = ({ isOwner, isReadMessage, isReceivedMessage, item }: Props) => {
+  const {
+    alertMessage,
+    confirmOpen,
+    handleReject,
+    handleConfirm,
+    handleDeleteMessage,
+    companionAvatarURL,
+    currentDialog,
+    setConfirmOpen,
+  } = useMessage(isOwner, item)
 
   return (
     <div className={cn(styles.messageContainer, isOwner && styles.justifyEnd)}>
@@ -43,18 +41,19 @@ export const Message = ({
           backgroundColor: `var(${isOwner ? '--color-primary-900' : '--color-dark-300'})`,
         }}
       >
-        {imgMessage && <img alt={'Image message'} className={styles.image} src={''} />}
-        {!imgMessageWithoutText ? (
-          <Typography className={styles.text} variant={'regular-text'}>
-            {voiceMessage ? 'Voice message' : item.messageText}
-          </Typography>
-        ) : null}
+        <Typography className={styles.text} variant={'regular-text'}>
+          {item.messageText}
+        </Typography>
         <Typography className={styles.timestamp} variant={'small-text'}>
           <div className={styles.messageActions}>
             {isOwner && (
-              <button className={styles.timestampTime} onClick={handleDeleteMessage}>
-                delete
-              </button>
+              <Button
+                variant={'text'}
+                onClick={handleDeleteMessage}
+                className={styles.deleteButton}
+              >
+                <TrashOutline width={20} height={20} viewBox={'0 0 24 24'} />
+              </Button>
             )}
             <span className={!isOwner ? styles.timestampWrapper : ''}>
               {new Date(item.createdAt).toLocaleTimeString('en-US', {
@@ -83,6 +82,14 @@ export const Message = ({
         </Typography>
       </div>
       {alertMessage && <Alert type={'error'} message={alertMessage} purpose={'toast'} />}
+      <ActionConfirmation
+        isOpen={confirmOpen}
+        message={`Are you sure you want to delete this message? It will also be deleted from ${currentDialog?.userName}`}
+        onConfirm={handleConfirm}
+        onReject={handleReject}
+        setIsOpen={setConfirmOpen}
+        title={'Delete message'}
+      />
     </div>
   )
 }

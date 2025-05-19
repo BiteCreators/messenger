@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { messagesApi } from '@/common/api/messenger.api'
 import { MessageData } from '@/common/types/messenger.type'
+import { useConfirmation } from '@byte-creators/utils'
 import { useRouter } from 'next/router'
 
 export const useMessage = (isOwner: boolean, item: MessageData) => {
@@ -10,12 +11,19 @@ export const useMessage = (isOwner: boolean, item: MessageData) => {
   const { data } = messagesApi.useGetDialogsQuery()
   const [deleteMessage] = messagesApi.useDeleteMessageMutation()
   const [alertMessage, setAlertMessage] = useState('')
+  const { confirmOpen, handleConfirm, handleReject, requestConfirmation, setConfirmOpen } =
+    useConfirmation()
   const currentDialog = data?.items.find(
     dialog => dialog.receiverId === Number(query.id) || dialog.ownerId === Number(query.id)
   )
 
   const handleDeleteMessage = async () => {
     if (!isOwner) {
+      return
+    }
+    const confirmed = await requestConfirmation()
+
+    if (!confirmed) {
       return
     }
 
@@ -33,5 +41,9 @@ export const useMessage = (isOwner: boolean, item: MessageData) => {
     handleDeleteMessage,
     companionAvatarURL,
     currentDialog,
+    confirmOpen,
+    handleReject,
+    handleConfirm,
+    setConfirmOpen,
   }
 }

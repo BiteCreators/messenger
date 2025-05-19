@@ -40,6 +40,7 @@
     height: fit-content;
     border-radius: 0.5rem;
     display: flex;
+    gap: 5px;
     flex-direction: column;
 }
 
@@ -60,6 +61,11 @@
     color: #8D9094;
     align-self: flex-end;
     margin-top: 0.25rem;
+}
+
+.deleteButton {
+    padding: 0;
+    color: var(--color-light-900);
 }
 
 .messageActions {
