@@ -32,7 +32,7 @@ export type Avatar = {
   url: string
   width: number
 }
-export type Message = {
+export type MessageData = {
   createdAt: string
   id: number
   messageText: string
@@ -45,7 +45,7 @@ export type Message = {
 export type Dialog = {
   avatars: Avatar[]
   userName: string
-} & Message
+} & MessageData
 export type Error = {
   error: string
   message: string
@@ -59,7 +59,7 @@ type BaseResponse<T> = {
 }
 
 export type DialogsResponse = BaseResponse<Dialog>
-export type MessagesResponse = BaseResponse<Message>
+export type MessagesResponse = BaseResponse<MessageData>
 
 export type MeResponse = {
   email: string

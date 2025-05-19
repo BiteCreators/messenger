@@ -18,6 +18,13 @@
     margin: 14px 0;
 }
 
+.messageCheckmark {
+    margin-right: 5px;
+}
+.messageCheckmarkDone {
+    margin-right: 7px;
+}
+
 .justifyEnd {
     justify-content: flex-end;
 }
@@ -28,11 +35,12 @@
 }
 
 .messageContent {
-    min-width: 90px;
+    min-width: 130px;
     max-width: 400px;
     height: fit-content;
     border-radius: 0.5rem;
     display: flex;
+    gap: 5px;
     flex-direction: column;
 }
 
@@ -55,6 +63,17 @@
     margin-top: 0.25rem;
 }
 
-.timestampTime {
-    padding-right: 10px;
+.deleteButton {
+    padding: 0;
+    color: var(--color-light-900);
+}
+
+.messageActions {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.timestampWrapper {
+    margin-right: 7px;
 }
